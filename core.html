@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>core.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>core.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define([
+	<span class="hljs-string">"./var/arr"</span>,
+	<span class="hljs-string">"./var/slice"</span>,
+	<span class="hljs-string">"./var/concat"</span>,
+	<span class="hljs-string">"./var/push"</span>,
+	<span class="hljs-string">"./var/indexOf"</span>,
+	<span class="hljs-string">"./var/class2type"</span>,
+	<span class="hljs-string">"./var/toString"</span>,
+	<span class="hljs-string">"./var/hasOwn"</span>,
+	<span class="hljs-string">"./var/support"</span>
+], <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( arr, slice, concat, push, indexOf, class2type, toString, hasOwn, support )</span> </span>{
+
+<span class="hljs-keyword">var</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Use the correct document accordingly with window argument (sandbox)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-built_in">document</span> = <span class="hljs-built_in">window</span>.document,
+
+	version = <span class="hljs-string">"@VERSION"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Define a local copy of jQuery</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	jQuery = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( selector, context )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>The jQuery object is actually just the init constructor ‘enhanced’
+Need init if jQuery is called (just allow error to be thrown if not included)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> jQuery.fn.init( selector, context );
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Support: Android&lt;4.1
+Make sure we trim BOM and NBSP
+被jQuery.trim()方法使用的正则表达式</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rtrim = <span class="hljs-regexp">/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Matches dashed string for camelizing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rmsPrefix = <span class="hljs-regexp">/^-ms-/</span>,
+	rdashAlpha = <span class="hljs-regexp">/-([\da-z])/gi</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Used by jQuery.camelCase as callback to replace()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	fcamelCase = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( all, letter )</span> </span>{
+		<span class="hljs-keyword">return</span> letter.toUpperCase();
+	};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>jQuery的原型声明。所以其实jQuery.fn就是jQuery的prototype
+这里面声明的所有方法都会被每个jQuery对象继承</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>jQuery.fn = jQuery.prototype = {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>The current version of jQuery being used</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	jquery: version,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>jQuery的构造函数，即上面的new jQuery.fn.init(), 也就是jQuery.prototype.init()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	constructor: jQuery,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Start with an empty selector</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	selector: <span class="hljs-string">""</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>The default length of a jQuery object is 0</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	length: <span class="hljs-number">0</span>,
+
+	toArray: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> slice.call( <span class="hljs-keyword">this</span> );
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Get the Nth element in the matched element set OR
+Get the whole matched element set as a clean array
+返回这个jQuery对象中的第num个元素，如果num为空的话，返回整个array
+注意这里的num可以是负数，即返回倒序的第num个，例如get(-1)就是返回最后一个元素</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	get: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( num )</span> </span>{
+		<span class="hljs-keyword">return</span> num != <span class="hljs-literal">null</span> ?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Return just the one element from the set</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			( num &lt; <span class="hljs-number">0</span> ? <span class="hljs-keyword">this</span>[ num + <span class="hljs-keyword">this</span>.length ] : <span class="hljs-keyword">this</span>[ num ] ) :</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Return all the elements in a clean array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			slice.call( <span class="hljs-keyword">this</span> );
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Take an array of elements and push it onto the stack
+(returning the new matched element set)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	pushStack: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( elems )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Build a new jQuery matched element set</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> ret = jQuery.merge( <span class="hljs-keyword">this</span>.constructor(), elems );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Add the old object onto the stack (as a reference)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		ret.prevObject = <span class="hljs-keyword">this</span>;
+		ret.context = <span class="hljs-keyword">this</span>.context;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Return the newly-formed element set</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> ret;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Execute a callback for every element in the matched set.
+(You can seed the arguments with an array of args, but this is
+only used internally.)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	each: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( callback, args )</span> </span>{
+		<span class="hljs-keyword">return</span> jQuery.each( <span class="hljs-keyword">this</span>, callback, args );
+	},
+
+	map: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( callback )</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.pushStack( jQuery.map(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( elem, i )</span> </span>{
+			<span class="hljs-keyword">return</span> callback.call( elem, i, elem );
+		}));
+	},
+
+	slice: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.pushStack( slice.apply( <span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span> ) );
+	},
+
+	first: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.eq( <span class="hljs-number">0</span> );
+	},
+
+	last: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.eq( -<span class="hljs-number">1</span> );
+	},
+
+	eq: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( i )</span> </span>{
+		<span class="hljs-keyword">var</span> len = <span class="hljs-keyword">this</span>.length,
+			j = +i + ( i &lt; <span class="hljs-number">0</span> ? len : <span class="hljs-number">0</span> );
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.pushStack( j &gt;= <span class="hljs-number">0</span> &amp;&amp; j &lt; len ? [ <span class="hljs-keyword">this</span>[j] ] : [] );
+	},
+
+	end: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.prevObject || <span class="hljs-keyword">this</span>.constructor(<span class="hljs-literal">null</span>);
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>For internal use only.
+Behaves like an Array’s method, not like a jQuery method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	push: push,
+	sort: arr.sort,
+	splice: arr.splice
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>jQuery.extend( [deep ], target, object1 [, objectN ] )
+这里jQuery.extend = jQuery.fn.extend = jQuery.prototype.extend
+extend主要用法有两个</p>
+<ol>
+<li>将所有object merge到target</li>
+<li>如果只有target一个参数，那么默认将target复制到jQuery对象中，即扩展jQuery的prototype</li>
+</ol>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>jQuery.extend = jQuery.fn.extend = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+	<span class="hljs-keyword">var</span> options, name, src, copy, copyIsArray, clone,
+		target = <span class="hljs-built_in">arguments</span>[<span class="hljs-number">0</span>] || {},
+		i = <span class="hljs-number">1</span>,
+		length = <span class="hljs-built_in">arguments</span>.length,
+		deep = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Handle a deep copy situation
+如果第一个参数是boolean类型，则该参数指示这次merge是否为deep merge </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> target === <span class="hljs-string">"boolean"</span> ) {
+		deep = target;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>skip the boolean and the target</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		target = <span class="hljs-built_in">arguments</span>[ i ] || {};
+		i++;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Handle case when target is a string or something (possible in deep copy)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> target !== <span class="hljs-string">"object"</span> &amp;&amp; !jQuery.isFunction(target) ) {
+		target = {};
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>extend jQuery itself if only one argument is passed
+如果只有target一个参数，那么默认将target复制到jQuery对象中，即扩展jQuery的prototype</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( i === length ) {
+		target = <span class="hljs-keyword">this</span>;
+		i--;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>遍历所有object，并将他们merge到target</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> ( ; i &lt; length; i++ ) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Only deal with non-null/undefined values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ( (options = <span class="hljs-built_in">arguments</span>[ i ]) != <span class="hljs-literal">null</span> ) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Extend the base object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> ( name <span class="hljs-keyword">in</span> options ) {
+				src = target[ name ];
+				copy = options[ name ];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Prevent never-ending loop</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> ( target === copy ) {
+					<span class="hljs-keyword">continue</span>;
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Recurse if we’re merging plain objects or arrays</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				<span class="hljs-keyword">if</span> ( deep &amp;&amp; copy &amp;&amp; ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+					<span class="hljs-keyword">if</span> ( copyIsArray ) {
+						copyIsArray = <span class="hljs-literal">false</span>;
+						clone = src &amp;&amp; jQuery.isArray(src) ? src : [];
+
+					} <span class="hljs-keyword">else</span> {
+						clone = src &amp;&amp; jQuery.isPlainObject(src) ? src : {};
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Never move original objects, clone them</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>					target[ name ] = jQuery.extend( deep, clone, copy );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>Don’t bring in undefined values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( copy !== <span class="hljs-literal">undefined</span> ) {
+					target[ name ] = copy;
+				}
+			}
+		}
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Return the modified object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> target;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>jQuery自己已经迫不及待的用上刚写好的extend方法了！
+下面为jQuery扩展了一些很实用的方法</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>jQuery.extend({</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Unique for each copy of jQuery on the page
+为页面上每个jQuery对象生成一个随机”id”</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	expando: <span class="hljs-string">"jQuery"</span> + ( version + <span class="hljs-built_in">Math</span>.random() ).replace( <span class="hljs-regexp">/\D/g</span>, <span class="hljs-string">""</span> ),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>Assume jQuery is ready without the ready module</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	isReady: <span class="hljs-literal">true</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>jQuery的error就是Javascript的原生Error对象</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	error: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( msg )</span> </span>{
+		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>( msg );
+	},
+
+	noop: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>See test/unit/core.js for details concerning isFunction.
+Since version 1.3, DOM methods and functions like alert
+aren’t supported. They return false on IE (#2968).
+判断一个obj是否为function，实际上是调用jQuery的type方法</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	isFunction: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span> </span>{
+		<span class="hljs-keyword">return</span> jQuery.type(obj) === <span class="hljs-string">"function"</span>;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>Javascript原生isArray</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	isArray: <span class="hljs-built_in">Array</span>.isArray,
+
+	isWindow: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span> </span>{
+		<span class="hljs-keyword">return</span> obj != <span class="hljs-literal">null</span> &amp;&amp; obj === obj.window;
+	},
+
+	isNumeric: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>parseFloat NaNs numeric-cast false positives (null|true|false|””)
+…but misinterprets leading-number strings, particularly hex literals (“0x…”)
+subtraction forces infinities to NaN</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> !jQuery.isArray( obj ) &amp;&amp; obj - <span class="hljs-built_in">parseFloat</span>( obj ) &gt;= <span class="hljs-number">0</span>;
+	},
+
+	isPlainObject: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Not plain objects:</p>
+<ul>
+<li>Any object or value whose internal [[Class]] property is not “[object Object]”</li>
+<li>DOM nodes</li>
+<li>window</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ( jQuery.type( obj ) !== <span class="hljs-string">"object"</span> || obj.nodeType || jQuery.isWindow( obj ) ) {
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+		}
+
+		<span class="hljs-keyword">if</span> ( obj.constructor &amp;&amp;
+				!hasOwn.call( obj.constructor.prototype, <span class="hljs-string">"isPrototypeOf"</span> ) ) {
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>If the function hasn’t returned already, we’re confident that
+|obj| is a plain object, created by {} or constructed with new Object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>判断一个obj是否为空</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	isEmptyObject: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span> </span>{
+		<span class="hljs-keyword">var</span> name;
+		<span class="hljs-keyword">for</span> ( name <span class="hljs-keyword">in</span> obj ) {
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+		}
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	},
+
+	type: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj )</span> </span>{
+		<span class="hljs-keyword">if</span> ( obj == <span class="hljs-literal">null</span> ) {
+			<span class="hljs-keyword">return</span> obj + <span class="hljs-string">""</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Support: Android &lt; 4.0, iOS &lt; 6 (functionish RegExp)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">"object"</span> || <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">"function"</span> ?
+			class2type[ toString.call(obj) ] || <span class="hljs-string">"object"</span> :
+			<span class="hljs-keyword">typeof</span> obj;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>Evaluates a script in a global context</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	globalEval: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( code )</span> </span>{
+		<span class="hljs-keyword">var</span> script,
+			indirect = <span class="hljs-built_in">eval</span>;
+
+		code = jQuery.trim( code );
+
+		<span class="hljs-keyword">if</span> ( code ) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>If the code includes a valid, prologue position
+strict mode pragma, execute code by injecting a
+script tag into the document.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> ( code.indexOf(<span class="hljs-string">"use strict"</span>) === <span class="hljs-number">1</span> ) {
+				script = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"script"</span>);
+				script.text = code;
+				<span class="hljs-built_in">document</span>.head.appendChild( script ).parentNode.removeChild( script );
+			} <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>Otherwise, avoid the DOM node creation, insertion
+and removal by using an indirect global eval</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				indirect( code );
+			}
+		}
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>Convert dashed to camelCase; used by the css and data modules
+Microsoft forgot to hump their vendor prefix (#9572)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	camelCase: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( string )</span> </span>{
+		<span class="hljs-keyword">return</span> string.replace( rmsPrefix, <span class="hljs-string">"ms-"</span> ).replace( rdashAlpha, fcamelCase );
+	},
+
+	nodeName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( elem, name )</span> </span>{
+		<span class="hljs-keyword">return</span> elem.nodeName &amp;&amp; elem.nodeName.toLowerCase() === name.toLowerCase();
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>args is for internal usage only
+jQuery的经典方法，其实在callback后面还有第三个args参数，只是该参数没有在API文档里面列出来，仅作为内部使用</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	each: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( obj, callback, args )</span> </span>{
+		<span class="hljs-keyword">var</span> value,
+			i = <span class="hljs-number">0</span>,
+			length = obj.length,
+			isArray = isArraylike( obj );
+
+		<span class="hljs-keyword">if</span> ( args ) {
+			<span class="hljs-keyword">if</span> ( isArray ) {
+				<span class="hljs-keyword">for</span> ( ; i &lt; length; i++ ) {
+					value = callback.apply( obj[ i ], args );
+
+					<span class="hljs-keyword">if</span> ( value === <span class="hljs-literal">false</span> ) {
+						<span class="hljs-keyword">break</span>;
+					}
+				}
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">for</span> ( i <span class="hljs-keyword">in</span> obj ) {
+					value = callback.apply( obj[ i ], args );
+
+					<span class="hljs-keyword">if</span> ( value === <span class="hljs-literal">false</span> ) {
+						<span class="hljs-keyword">break</span>;
+					}
+				}
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>A special, fast, case for the most common use of each</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">if</span> ( isArray ) {
+				<span class="hljs-keyword">for</span> ( ; i &lt; length; i++ ) {
+					value = callback.call( obj[ i ], i, obj[ i ] );
+
+					<span class="hljs-keyword">if</span> ( value === <span class="hljs-literal">false</span> ) {
+						<span class="hljs-keyword">break</span>;
+					}
+				}
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">for</span> ( i <span class="hljs-keyword">in</span> obj ) {
+					value = callback.call( obj[ i ], i, obj[ i ] );
+
+					<span class="hljs-keyword">if</span> ( value === <span class="hljs-literal">false</span> ) {
+						<span class="hljs-keyword">break</span>;
+					}
+				}
+			}
+		}
+
+		<span class="hljs-keyword">return</span> obj;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>Support: Android&lt;4.1</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	trim: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( text )</span> </span>{
+		<span class="hljs-keyword">return</span> text == <span class="hljs-literal">null</span> ?
+			<span class="hljs-string">""</span> :
+			( text + <span class="hljs-string">""</span> ).replace( rtrim, <span class="hljs-string">""</span> );
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>results is for internal usage only</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	makeArray: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( arr, results )</span> </span>{
+		<span class="hljs-keyword">var</span> ret = results || [];
+
+		<span class="hljs-keyword">if</span> ( arr != <span class="hljs-literal">null</span> ) {
+			<span class="hljs-keyword">if</span> ( isArraylike( <span class="hljs-built_in">Object</span>(arr) ) ) {
+				jQuery.merge( ret,
+					<span class="hljs-keyword">typeof</span> arr === <span class="hljs-string">"string"</span> ?
+					[ arr ] : arr
+				);
+			} <span class="hljs-keyword">else</span> {
+				push.call( ret, arr );
+			}
+		}
+
+		<span class="hljs-keyword">return</span> ret;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>判断一个elem是否在一个arr里面，实际上就是调用的indexOf</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	inArray: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( elem, arr, i )</span> </span>{
+		<span class="hljs-keyword">return</span> arr == <span class="hljs-literal">null</span> ? -<span class="hljs-number">1</span> : indexOf.call( arr, elem, i );
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>合并两个array（实际上只要是arrayLike的对象都行）</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	merge: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( first, second )</span> </span>{
+		<span class="hljs-keyword">var</span> len = +second.length,
+			j = <span class="hljs-number">0</span>,
+			i = first.length;
+
+		<span class="hljs-keyword">for</span> ( ; j &lt; len; j++ ) {
+			first[ i++ ] = second[ j ];
+		}
+
+		first.length = i;
+
+		<span class="hljs-keyword">return</span> first;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>利用callback方法返回的true或者false方法来filter掉elems里面元素</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	grep: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( elems, callback, invert )</span> </span>{
+		<span class="hljs-keyword">var</span> callbackInverse,
+			matches = [],
+			i = <span class="hljs-number">0</span>,
+			length = elems.length,
+			callbackExpect = !invert;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>Go through the array, only saving the items
+that pass the validator function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> ( ; i &lt; length; i++ ) {
+			callbackInverse = !callback( elems[ i ], i );
+			<span class="hljs-keyword">if</span> ( callbackInverse !== callbackExpect ) {
+				matches.push( elems[ i ] );
+			}
+		}
+
+		<span class="hljs-keyword">return</span> matches;
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>arg is for internal usage only
+和grep用法类似，利用callback来处理一个ArrayLike的elems，返回一个新的对象</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	map: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( elems, callback, arg )</span> </span>{
+		<span class="hljs-keyword">var</span> value,
+			i = <span class="hljs-number">0</span>,
+			length = elems.length,
+			isArray = isArraylike( elems ),
+			ret = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>Go through the array, translating each of the items to their new values</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ( isArray ) {
+			<span class="hljs-keyword">for</span> ( ; i &lt; length; i++ ) {
+				value = callback( elems[ i ], i, arg );
+
+				<span class="hljs-keyword">if</span> ( value != <span class="hljs-literal">null</span> ) {
+					ret.push( value );
+				}
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>Go through every key on the object,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">for</span> ( i <span class="hljs-keyword">in</span> elems ) {
+				value = callback( elems[ i ], i, arg );
+
+				<span class="hljs-keyword">if</span> ( value != <span class="hljs-literal">null</span> ) {
+					ret.push( value );
+				}
+			}
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>Flatten any nested arrays</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">return</span> concat.apply( [], ret );
+	},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>A global GUID counter for objects</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	guid: <span class="hljs-number">1</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>Bind a function to a context, optionally partially applying any
+arguments.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	proxy: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">( fn, context )</span> </span>{
+		<span class="hljs-keyword">var</span> tmp, args, proxy;
+
+		<span class="hljs-keyword">if</span> ( <span class="hljs-keyword">typeof</span> context === <span class="hljs-string">"string"</span> ) {
+			tmp = fn[ context ];
+			context = fn;
+			fn = tmp;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>Quick check to determine if target is callable, in the spec
+this throws a TypeError, but we will just return undefined.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ( !jQuery.isFunction( fn ) ) {
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>Simulated bind</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		args = slice.call( <span class="hljs-built_in">arguments</span>, <span class="hljs-number">2</span> );
+		proxy = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+			<span class="hljs-keyword">return</span> fn.apply( context || <span class="hljs-keyword">this</span>, args.concat( slice.call( <span class="hljs-built_in">arguments</span> ) ) );
+		};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <p>Set the guid of unique handler to the same of original handler, so it can be removed</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+
+		<span class="hljs-keyword">return</span> proxy;
+	},
+
+	now: <span class="hljs-built_in">Date</span>.now,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <p>jQuery.support is not used in Core but other projects attach their
+properties to it so it needs to exist.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	support: support
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p>Populate the class2type map</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>jQuery.each(<span class="hljs-string">"Boolean Number String Function Array Date RegExp Object Error"</span>.split(<span class="hljs-string">" "</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(i, name)</span> </span>{
+	class2type[ <span class="hljs-string">"[object "</span> + name + <span class="hljs-string">"]"</span> ] = name.toLowerCase();
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p>判断一个obj是不是ArrayLike</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isArraylike</span><span class="hljs-params">( obj )</span> </span>{
+	<span class="hljs-keyword">var</span> length = obj.length,
+		type = jQuery.type( obj );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p>function和window都不是</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( type === <span class="hljs-string">"function"</span> || jQuery.isWindow( obj ) ) {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <p>如果obj是DOM里面的element node，并且长度不为0，则是ArrayLike</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ( obj.nodeType === <span class="hljs-number">1</span> &amp;&amp; length ) {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>其余情况</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> type === <span class="hljs-string">"array"</span> || length === <span class="hljs-number">0</span> ||
+		<span class="hljs-keyword">typeof</span> length === <span class="hljs-string">"number"</span> &amp;&amp; length &gt; <span class="hljs-number">0</span> &amp;&amp; ( length - <span class="hljs-number">1</span> ) <span class="hljs-keyword">in</span> obj;
+}
+
+<span class="hljs-keyword">return</span> jQuery;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
